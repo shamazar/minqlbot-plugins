@@ -54,9 +54,11 @@ class serverelo(minqlbot.Plugin):
             for player in players.copy():
                 if player != self.bot_name:
                     if isinstance(player, str):
-                        self.cache[player] = self.plugins["balance"].cache[player]["ca"]["elo"]
+                        if player in self.plugins["balance"].cache:
+                            self.cache[player] = self.plugins["balance"].cache[player]["ca"]["elo"]
                     else:
-                        self.cache[player.clean_name.lower()] = self.plugins["balance"].cache[player.clean_name.lower()]["ca"]["elo"]
+                        if player.clean_name.lower() in self.plugins["balance"].cache:
+                            self.cache[player.clean_name.lower()] = self.plugins["balance"].cache[player.clean_name.lower()]["ca"]["elo"]
         if self.bot_name in self.cache:
             del self.cache[self.bot_name]
         elos = ''
