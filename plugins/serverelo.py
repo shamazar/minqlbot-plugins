@@ -67,7 +67,11 @@ class serverelo(minqlbot.Plugin):
             avg += self.cache[name]
             elos += '^7' + name + ': ^5' + str(self.cache[name]) + '^7, '
         elos = elos[:-2]
-        avg /= len(self.cache)
+        try:
+            avg /= len(self.cache)
+        except:
+            channel.reply("^7There are no players!")
+            return
         channel.reply("^7Average ELO: ^5{}".format(int(avg)))
         for s in self.split_long_msg(elos, delimiter=", "):
             channel.reply(s)
