@@ -62,7 +62,7 @@ class irc(minqlbot.Plugin):
         self.admin_channel = self.config["IRC"]["AdminChannel"]
         self.admin_channel_pass = self.config["IRC"]["AdminChannelPassword"]
         self.color_translation = self.config["IRC"].getboolean("TranslateColors", fallback=False)
-        self.irc_name = minqlbot.NAME
+        self.irc_name = "QL" + minqlbot.NAME
         self.irc = SimpleIrc(self.irc_name, "irc.quakenet.org", 6667, self.channel,
                              self.admin_channel, self.admin_channel_pass, self)
         self.irc_thread = Thread(target=self.irc.run)
@@ -248,7 +248,6 @@ class SimpleIrc(asynchat.async_chat):
                     self.mode(self.nick, "+x")
         
             self.out("JOIN {0},{1} {2},{2}\r\n".format(self.channel, self.admin_channel, self.password))
-            self.out("JOIN #mitchbot\r\n")
         
         self.ibuf = ""
 

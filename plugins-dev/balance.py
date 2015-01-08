@@ -408,14 +408,13 @@ class balance(minqlbot.Plugin):
     def check_rating_requirements(self, names, channel, game_type):
         """Checks if someone meets the rating requirements to play on the server."""
         config = minqlbot.get_config()
-        min_rating = 1900
-        max_rating = 3000
+        min_rating = 0
+        max_rating = 0
         if "Balance" in config:
-##            if "MinimumRating" in config["Balance"]:
-##                min_rating = int(config["Balance"]["MinimumRating"])
-##            if "MaximumRating" in config["Balance"]:
-##                max_rating = int(config["Balance"]["MaximumRating"])
-            pass
+            if "MinimumRating" in config["Balance"]:
+                min_rating = int(config["Balance"]["MinimumRating"])
+            if "MaximumRating" in config["Balance"]:
+                max_rating = int(config["Balance"]["MaximumRating"])
         else:
             return True
 
