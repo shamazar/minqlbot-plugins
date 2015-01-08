@@ -44,7 +44,7 @@ class voteabort(minqlbot.Plugin):
         teams = self.teams()
         players = teams["red"] + teams["blue"]
         if self.game().state == "in_progress":
-            if self.has_permission(player, 5):
+            if self.has_permission(player, 2):
                 self.abort_game(channel)
             else:
                 if player in players:
