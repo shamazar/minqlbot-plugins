@@ -15,6 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with minqlbot. If not, see <http://www.gnu.org/licenses/>.
 
+"""
+Prints server players ELOs in the same format as the QLRanks script, e.g.
+
+    Average ELO: 2104
+    1nkubo: 2254, v3n00m: 2183, meskaliiin: 2142, lavozz: 2091
+    lionsmane: 1965, steffo: 2052, wallabiee: 2058, buffet: 2091
+
+Works by caching the ELO of players using the cache from the balance plugin,
+so won't work without it.
+"""
+
 import minqlbot
 
 class serverelo(minqlbot.Plugin):
