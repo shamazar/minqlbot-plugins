@@ -19,7 +19,7 @@ import minqlbot
 
 class serverelo(minqlbot.Plugin):
     def __init__(self):
-        self.add_command(("serverelo", "selo"), self.cmd_serverelo, 5)
+        self.add_command(("serverelo", "selo"), self.cmd_serverelo)
         
         self.bot_name = minqlbot.NAME
         
