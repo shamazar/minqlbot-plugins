@@ -26,6 +26,12 @@ class serverelo(minqlbot.Plugin):
         self.cache = {}
 
     def cmd_serverelo(self, msg, game_type, channel):
+        if "balance" in self.plugins:
+            self.selo(channel)
+        else:
+            channel.reply("^7This requires the ^5balance ^7plugin to be loaded.")
+
+    def selo(self, channel):
         teams = self.teams()
         balance_cache = self.plugins["balance"].cache
         players = teams["red"] + teams["blue"] + teams["spectator"]
