@@ -19,33 +19,19 @@ import minqlbot
 
 class serverelo(minqlbot.Plugin):
     def __init__(self):
-        self.add_command(("serverelo", "selo"), self.cmd_serverelo, 5)
+        self.add_command(("serverelo", "selo"), self.cmd_serverelo)
+        
+        self.bot_name = minqlbot.NAME
         
         self.cache = {}
 
-    def split_long_msg(self, msg, limit=100, delimiter=" "):
-        """Split a message into several pieces for channels with limtations."""
-        if len(msg) < limit:
-            return [msg]
-        out = []
-        index = limit
-        for i in reversed(range(limit)):
-            if msg[i:i + len(delimiter)] == delimiter:
-                index = i
-                out.append(msg[0:index])
-                # Keep going, but skip the delimiter.
-                rest = msg[index + len(delimiter):]
-                if rest:
-                    out.extend(self.split_long_msg(rest, limit, delimiter))
-                return out
-        out.append(msg[0:index])
-        # Keep going.
-        rest = msg[index:]
-        if rest:
-            out.extend(self.split_long_msg(rest, limit, delimiter))
-        return out
-
     def cmd_serverelo(self, msg, game_type, channel):
+        if "balance" in self.plugins:
+            selo(channel)
+        else:
+            channel.reply("This requires the balance plugin to be loaded.")
+
+    def selo(self, channel):
         teams = self.teams()
         balance_cache = self.plugins["balance"].cache
         players = teams["red"] + teams["blue"] + teams["spectator"]
@@ -55,20 +41,20 @@ class serverelo(minqlbot.Plugin):
         not_cached = self.not_cached(self.game().short_type, players)
         if not_cached:
             for player in players.copy():
-                # if isinstance(player, str):
-                #     if not self.is_cached(player, game_type):
-                #         not_cached.append(player)
-                # elif not self.is_cached(player.clean_name.lower(), game_type):
-                #     not_cached.append(player.clean_name.lower())
-                self.debug(player)
-        if "mitchbot" in self.cache:
-            del self.cache["mitchbot"]
+                if player != self.bot_name:
+                    if isinstance(player, str):
+                        self.cache[player] = self.plugins["balance"].cache[player]["ca"]["elo"]
+                    else:
+                        self.cache[player.clean_name.lower()] = self.plugins["balance"].cache[player.clean_name.lower()]["ca"]["elo"]
+        if self.bot_name in self.cache:
+            del self.cache[self.bot_name]
         elos = ''
         avg = 0
         for name in self.cache:
-            elos += '^7' + name + ': ^5' + self.cache[name] + '^7, '
+            avg += self.cache[name]
+            elos += '^7' + name + ': ^5' + str(self.cache[name]) + '^7, '
         elos = elos[:-2]
-        avg /= len(players)
+        avg /= len(self.cache)
         channel.reply("^7Average ELO: ^5{}".format(int(avg)))
         for s in self.split_long_msg(elos, delimiter=", "):
             channel.reply(s)
@@ -100,3 +86,25 @@ class serverelo(minqlbot.Plugin):
                 return True
             else:
                 return False
+
+    def split_long_msg(self, msg, limit=100, delimiter=" "):
+        """Split a message into several pieces for channels with limtations."""
+        if len(msg) < limit:
+            return [msg]
+        out = []
+        index = limit
+        for i in reversed(range(limit)):
+            if msg[i:i + len(delimiter)] == delimiter:
+                index = i
+                out.append(msg[0:index])
+                # Keep going, but skip the delimiter.
+                rest = msg[index + len(delimiter):]
+                if rest:
+                    out.extend(self.split_long_msg(rest, limit, delimiter))
+                return out
+        out.append(msg[0:index])
+        # Keep going.
+        rest = msg[index:]
+        if rest:
+            out.extend(self.split_long_msg(rest, limit, delimiter))
+        return out

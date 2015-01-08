@@ -59,12 +59,12 @@ class balance(minqlbot.Plugin):
         self.add_hook("vote_ended", self.handle_vote_ended)
         self.add_hook("player_connect", self.handle_player_connect)
         self.add_hook("team_switch", self.handle_team_switch)
-        self.add_command(("teams", "teens"), self.cmd_teams)
-        self.add_command("balance", self.cmd_balance, 1)
-        self.add_command("do", self.cmd_do, 1)
-        self.add_command(("agree", "a"), self.cmd_agree)
+        #self.add_command(("teams", "teens"), self.cmd_teams)
+        #self.add_command("balance", self.cmd_balance, 1)
+        #self.add_command("do", self.cmd_do, 1)
+        #self.add_command(("agree", "a"), self.cmd_agree)
         self.add_command(("setrating", "setelo"), self.cmd_setrating, 3, usage="<full_name> <rating>")
-        self.add_command(("getrating", "getelo", "elo"), self.cmd_getrating, usage="<full_name>")
+        self.add_command(("getrating", "getelo"), self.cmd_getrating, usage="<full_name>")
         self.add_command(("remrating", "remelo"), self.cmd_remrating, 3, usage="<full_name>")
 
         self.suggested_pair = None
