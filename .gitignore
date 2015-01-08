@@ -1,2 +1,6 @@
 *.pyc
 plugins/test.py
+plugins/python/minqlbot.db
+plugins/python/LICENSE
+plugins/python/db.txt
+plugins/python/config.cfg
