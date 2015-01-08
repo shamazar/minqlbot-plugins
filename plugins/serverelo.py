@@ -46,9 +46,12 @@ class serverelo(minqlbot.Plugin):
         teams = self.teams()
         balance_cache = self.plugins["balance"].cache
         players = teams["red"] + teams["blue"] + teams["spectator"]
+        left_players = []
         for name in self.cache:
             if name not in players:
-                del self.cache[name]
+                left_players.append(name)
+        for player in left_players:
+            del self.cache[player]
         not_cached = self.not_cached(self.game().short_type, players)
         if not_cached:
             for player in players.copy():
