@@ -67,7 +67,7 @@ class ban(minqlbot.Plugin):
 
     def handle_countdown(self):
         if self.is_leaver_banning():
-            self.msg("^7Leavers are being kept track of. Repeat offenders ^6will^7 be banned.")
+            self.msg("^7Leavers are being kept track of. Repeat offenders ^5will^7 be banned.")
 
     def handle_bot_connect(self):
         if self.game().state == "in_progress":
@@ -99,7 +99,7 @@ class ban(minqlbot.Plugin):
         self.db_commit()
 
         if leavers:
-            self.msg("^7Leavers: ^6{}".format(" ".join([p.clean_name for p in leavers])))
+            self.msg("^7Leavers: ^5{}".format(" ".join([p.clean_name for p in leavers])))
             self.players_start = []
 
     def handle_team_switch(self, player, old_team, new_team):
@@ -129,7 +129,7 @@ class ban(minqlbot.Plugin):
         name = self.clean_text(msg[1])
         # Permission level 5 players not bannable.
         if self.has_permission(name, 5):
-            channel.reply("^6{}^7 has permission level 5 and cannot be banned.".format(name))
+            channel.reply("^5{}^7 has permission level 5 and cannot be banned.".format(name))
             return
 
         if len(msg) > 4:
@@ -169,7 +169,7 @@ class ban(minqlbot.Plugin):
             self.db_query("INSERT INTO Bans VALUES(?, ?, ?, 1, ?)", name.lower(), now, expires, reason)
             self.db_commit()
             self.kickban(name)
-            channel.reply("^6{} ^7has been banned. Ban expires on ^6{}^7.".format(name, expires))
+            channel.reply("^5{} ^7has been banned. Ban expires on ^5{}^7.".format(name, expires))
             return
 
     def cmd_unban(self, player, msg, channel):
@@ -186,9 +186,9 @@ class ban(minqlbot.Plugin):
                 unbanned = True
         
         if unbanned:
-            channel.reply("^6{}^7 has been unbanned.".format(name))
+            channel.reply("^5{}^7 has been unbanned.".format(name))
         else:
-            channel.reply("^7 No active bans on ^6{}^7 found.".format(name))
+            channel.reply("^7 No active bans on ^5{}^7 found.".format(name))
 
     def cmd_checkban(self, player, msg, channel):
         if len(msg) < 2:
@@ -197,18 +197,18 @@ class ban(minqlbot.Plugin):
         # Check manual bans first.
         res = self.is_banned(msg[1])
         if res and res[1] == DEFAULT_REASON:
-            channel.reply("^6{}^7 is banned until ^6{}^7.".format(msg[1], res[0]))
+            channel.reply("^5{}^7 is banned until ^5{}^7.".format(msg[1], res[0]))
             return
         elif res:
-            channel.reply("^6{}^7 is banned until ^6{}^7 for the follow reason:^6 {}".format(msg[1], *res))
+            channel.reply("^5{}^7 is banned until ^5{}^7 for the follow reason:^5 {}".format(msg[1], *res))
             return
         elif self.is_leaver_banning():
             status = self.leave_status(msg[1])
             if status and status[0] == "ban":
-                channel.reply("^6{} ^7is banned for having left too many games.".format(msg[1]))
+                channel.reply("^5{} ^7is banned for having left too many games.".format(msg[1]))
                 return
         
-        channel.reply("^6{} ^7is not banned.".format(msg[1]))
+        channel.reply("^5{} ^7is not banned.".format(msg[1]))
 
     def cmd_forgive(self, player, msg, channel):
         if len(msg) < 3:
@@ -217,10 +217,10 @@ class ban(minqlbot.Plugin):
         c = self.db_query("SELECT games_left FROM Players WHERE name=?", msg[1])
         row = c.fetchone()
         if not row:
-            channel.reply("^7I do not know^6 {}^7.".format(msg[1]))
+            channel.reply("^7I do not know^5 {}^7.".format(msg[1]))
             return
         elif row["games_left"] <= 0:
-            channel.reply("^6{}^7's leaves are already at ^6{}^7.".format(msg[1], row["games_left"]))
+            channel.reply("^5{}^7's leaves are already at ^5{}^7.".format(msg[1], row["games_left"]))
             return
 
         try:
@@ -237,7 +237,7 @@ class ban(minqlbot.Plugin):
 
         self.db_query("UPDATE Players SET games_left=games_left-? WHERE name=?", forgiven, msg[1])
         self.db_commit()
-        channel.reply("^7^6{}^7 games have been forgiven, putting ^6{}^7 at ^6{}^7 leaves."
+        channel.reply("^7^5{}^7 games have been forgiven, putting ^5{}^7 at ^5{}^7 leaves."
             .format(forgiven, msg[1], row["games_left"] - forgiven))
 
 
@@ -319,8 +319,8 @@ class ban(minqlbot.Plugin):
         return (action, ratio)
 
     def warn_player(self, player, ratio):
-        self.tell("^7You have only completed ^6{}^7 percent of your games.".format(round(ratio * 100, 1)), player)
-        self.tell("^7If you keep leaving you ^6will^7 be banned.", player)
+        self.tell("^7You have only completed ^5{}^7 percent of your games.".format(round(ratio * 100, 1)), player)
+        self.tell("^7If you keep leaving you ^5will^7 be banned.", player)
 
             
 

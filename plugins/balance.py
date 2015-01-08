@@ -172,7 +172,7 @@ class balance(minqlbot.Plugin):
             self.db_query("INSERT INTO Players VALUES(?, 0, '', 0, 0)", name)
             self.db_query("INSERT INTO Ratings VALUES(?, ?, ?)", name, short_game_type, rating)
             self.db_commit()
-            channel.reply("^6{}^7 was added as a player with a ^6{}^7 {} rating.".format(msg[1], rating, game.type))
+            channel.reply("^5{}^7 was added as a player with a ^5{}^7 {} rating.".format(msg[1], rating, game.type))
             if name in self.cache and short_game_type in self.cache[name]:
                 del self.cache[name][short_game_type]
             return
@@ -183,7 +183,7 @@ class balance(minqlbot.Plugin):
             if row["game_type"] == short_game_type:
                 self.db_query("UPDATE Ratings SET rating=? WHERE name=? AND game_type=?", rating, name, short_game_type)
                 self.db_commit()
-                channel.reply("^6{}^7's {} rating has been updated to ^6{}^7.".format(msg[1], game.type, rating))
+                channel.reply("^5{}^7's {} rating has been updated to ^5{}^7.".format(msg[1], game.type, rating))
                 if name in self.cache and short_game_type in self.cache[name]:
                     del self.cache[name][short_game_type]
                 return
@@ -191,7 +191,7 @@ class balance(minqlbot.Plugin):
         # We have the player, but the rating isn't set.
         self.db_query("INSERT INTO Ratings VALUES(?, ?, ?)", name, short_game_type, rating)
         self.db_commit()
-        channel.reply("^6{}^7's {} rating was set to ^6{}^7.".format(msg[1], game.type, rating))
+        channel.reply("^5{}^7's {} rating was set to ^5{}^7.".format(msg[1], game.type, rating))
         if name in self.cache and short_game_type in self.cache[name]:
             del self.cache[name][short_game_type]
         return
@@ -213,7 +213,7 @@ class balance(minqlbot.Plugin):
             self.individual_rating(name, channel, short_game_type)
             return
         else:
-            channel.reply("^6{}^7's {} rating is set to ^6{}^7 on this server specifically."
+            channel.reply("^5{}^7's {} rating is set to ^5{}^7 on this server specifically."
                 .format(msg[1], game.type, row["rating"]))
 
     def cmd_remrating(self, player, msg, channel):
@@ -225,11 +225,11 @@ class balance(minqlbot.Plugin):
         name = self.clean_text(msg[1]).lower()
         c = self.db_query("DELETE FROM Ratings WHERE name=? AND game_type=?", name, short_game_type)
         if not c.rowcount:
-            channel.reply("^7I have no {} rating data on ^6{}^7.".format(game.type, msg[1]))
+            channel.reply("^7I have no {} rating data on ^5{}^7.".format(game.type, msg[1]))
             return
         else:
             self.db_commit()
-            channel.reply("^6{}^7's {} rating data has been removed.".format(msg[1], game.type))
+            channel.reply("^5{}^7's {} rating data has been removed.".format(msg[1], game.type))
             if name in self.cache and short_game_type in self.cache[name]:
                 del self.cache[name][short_game_type]
             return
@@ -382,7 +382,7 @@ class balance(minqlbot.Plugin):
             elif lookup.status == -2:
                 err_msg = "^7The connection to QLRanks timed out."
             else:
-                err_msg = "^7The connection to QLRanks failed with error code: ^6{}".format(lookup.status)
+                err_msg = "^7The connection to QLRanks failed with error code: ^5{}".format(lookup.status)
             channel = self.lookups[lookup.uid][2]
             channel.reply(err_msg)
             del self.lookups[lookup.uid]
@@ -443,10 +443,10 @@ class balance(minqlbot.Plugin):
                     if p.team != "spectator":
                         self.put(name, "spectator")
                         if self.cache[name][game_type]["elo"] > max_rating:
-                            self.tell("^7Sorry, but you can have at most ^6{}^7 rating to play here and you have ^6{}^7."
+                            self.tell("^7Sorry, but you can have at most ^5{}^7 rating to play here and you have ^5{}^7."
                                 .format(max_rating, self.cache[name][game_type]["elo"]), name)
                         elif self.cache[name][game_type]["elo"] < min_rating:
-                            self.tell("^7Sorry, but you need at least ^6{}^7 rating to play here and you have ^6{}^7."
+                            self.tell("^7Sorry, but you need at least ^5{}^7 rating to play here and you have ^5{}^7."
                                 .format(min_rating, self.cache[name][game_type]["elo"]), name)
                 else:
                     self.kickban(name)
@@ -469,18 +469,18 @@ class balance(minqlbot.Plugin):
         # NO DATA?
         long_game_type = minqlbot.GAMETYPES[minqlbot.GAMETYPES_SHORT.index(game_type)]
         if self.cache[name][game_type]["rank"] == 0:
-            channel.reply("^7QLRanks has no data on ^6{}^7 for {}.".format(name, long_game_type))
+            channel.reply("^7QLRanks has no data on ^5{}^7 for {}.".format(name, long_game_type))
             return True
         # ALIAS?
         elif "alias_of" in self.cache[name]:
             if "real_elo" in self.cache[name][game_type]: # Ceiling/floor clipped rating?
                 real = self.cache[name][game_type]["real_elo"]
                 clipped = self.cache[name][game_type]["elo"]
-                channel.reply("^6{}^7 is an alias of ^6{}^7, who is ranked #^6{}^7 in {} with a rating of ^6{}^7, but treated as ^6{}^7."
+                channel.reply("^5{}^7 is an alias of ^5{}^7, who is ranked #^5{}^7 in {} with a rating of ^5{}^7, but treated as ^5{}^7."
                     .format(name, self.cache[name]["alias_of"], self.cache[name][game_type]["rank"],
                             long_game_type, real, clipped))
             else:
-                channel.reply("^6{}^7 is an alias of ^6{}^7, who is ranked #^6{}^7 in {} with a rating of ^6{}^7."
+                channel.reply("^5{}^7 is an alias of ^5{}^7, who is ranked #^5{}^7 in {} with a rating of ^5{}^7."
                     .format(name, self.cache[name]["alias_of"], self.cache[name][game_type]["rank"],
                             long_game_type, self.cache[name][game_type]["elo"]))
             return True
@@ -489,10 +489,10 @@ class balance(minqlbot.Plugin):
             if "real_elo" in self.cache[name][game_type]: # Ceiling/floor clipped rating?
                 real = self.cache[name][game_type]["real_elo"]
                 clipped = self.cache[name][game_type]["elo"]
-                channel.reply("^6{}^7 is ranked #^6{}^7 in {} with a rating of ^6{}^7, but treated as ^6{}^7."
+                channel.reply("^5{}^7 is ranked #^5{}^7 in {} with a rating of ^5{}^7, but treated as ^5{}^7."
                     .format(name, self.cache[name][game_type]["rank"], long_game_type, real, clipped))
             else:
-                channel.reply("^6{}^7 is ranked #^6{}^7 in {} with a rating of ^6{}^7."
+                channel.reply("^5{}^7 is ranked #^5{}^7 in {} with a rating of ^5{}^7."
                     .format(name, self.cache[name][game_type]["rank"], long_game_type, self.cache[name][game_type]["elo"]))
             return True
 
@@ -546,7 +546,7 @@ class balance(minqlbot.Plugin):
             minimum_suggestion_diff = 25
 
         if switch and switch[1] >= minimum_suggestion_diff:
-            channel.reply("^7SUGGESTION: switch ^6{}^7 with ^6{}^7. Type !a to agree."
+            channel.reply("^7SUGGESTION: switch ^5{}^7 with ^5{}^7. Type !a to agree."
                 .format(switch[0][0].clean_name, switch[0][1].clean_name))
             if not self.suggested_pair or self.suggested_pair[0] != switch[0][0] or self.suggested_pair[1] != switch[0][1]:
                 self.suggested_pair = (switch[0][0], switch[0][1])
@@ -554,7 +554,7 @@ class balance(minqlbot.Plugin):
         else:
             i = random.randint(0, 99)
             if not i:
-                channel.reply("^7Teens look ^6good!")
+                channel.reply("^7Teens look ^5good!")
             else:
                 channel.reply("^7Teams look good!")
             self.suggested_pair = None
@@ -610,7 +610,7 @@ class balance(minqlbot.Plugin):
                 while switch:
                     p1 = switch[0][0]
                     p2 = switch[0][1]
-                    self.msg("^7{} ^6<=> ^7{}".format(p1, p2))
+                    self.msg("^7{} ^5<=> ^7{}".format(p1, p2))
                     self.switch(p1, p2)
                     teams["blue"].append(p1)
                     teams["red"].append(p2)

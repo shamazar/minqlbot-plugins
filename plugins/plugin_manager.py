@@ -27,40 +27,40 @@ class plugin_manager(minqlbot.Plugin):
     
     def cmd_load(self, player, msg, channel):
         if len(msg) < 2:
-            channel.reply("^7Usage: ^6!load <plugin>")
+            channel.reply("^7Usage: ^5!load <plugin>")
         else:
             try:
                 minqlbot.load_plugin(msg[1])
-                channel.reply("^7Plugin ^6{} ^7has been successfully loaded."
+                channel.reply("^7Plugin ^5{} ^7has been successfully loaded."
                     .format(msg[1]))
             except:
-                channel.reply("^7Plugin ^6{} ^7has failed to load."
+                channel.reply("^7Plugin ^5{} ^7has failed to load."
                     .format(msg[1]))
                 raise
     
     def cmd_unload(self, player, msg, channel):
         if len(msg) < 2:
-            channel.reply("^7Usage: ^6!unload <plugin>")
+            channel.reply("^7Usage: ^5!unload <plugin>")
         else:
             try:
                 minqlbot.unload_plugin(msg[1])
-                channel.reply("^7Plugin ^6{} ^7has been successfully unloaded."
+                channel.reply("^7Plugin ^5{} ^7has been successfully unloaded."
                     .format(msg[1]))
             except:
-                channel.reply("^7Plugin ^6{} ^7has failed to unload."
+                channel.reply("^7Plugin ^5{} ^7has failed to unload."
                     .format(msg[1]))
                 raise
     
     def cmd_reload(self, player, msg, channel):
         if len(msg) < 2:
-            channel.reply("^7Usage: ^6!reload <plugin>")
+            channel.reply("^7Usage: ^5!reload <plugin>")
         else:
             try:
                 minqlbot.reload_plugin(msg[1])
-                channel.reply("^7Plugin ^6{} ^7has been successfully reloaded."
+                channel.reply("^7Plugin ^5{} ^7has been successfully reloaded."
                     .format(msg[1]))
             except:
-                channel.reply("^7Plugin ^6{} ^7has failed to reload."
+                channel.reply("^7Plugin ^5{} ^7has failed to reload."
                     .format(msg[1]))
                 raise
     

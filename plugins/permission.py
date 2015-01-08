@@ -36,9 +36,9 @@ class permission(minqlbot.Plugin):
         
         perm = self.get_permission(msg[1].lower())
         if perm == None:
-            channel.reply("^7I do not know ^6{}^7.".format(msg[1]))
+            channel.reply("^7I do not know ^5{}^7.".format(msg[1]))
         else:
-            channel.reply("^6{}^7 has permission level ^6{}^7.".format(msg[1], perm))
+            channel.reply("^5{}^7 has permission level ^5{}^7.".format(msg[1], perm))
 
     def cmd_myperm(self, player, msg, channel):
         name = player.clean_name.lower()
@@ -46,7 +46,7 @@ class permission(minqlbot.Plugin):
         if perm == None:
             channel.reply("^7I do not know you.")
         else:
-            channel.reply("^7You have permission level ^6{}^7.".format(perm))
+            channel.reply("^7You have permission level ^5{}^7.".format(perm))
         
     def set_permissions(self, name, level, channel):
         lvl = 0
@@ -60,12 +60,12 @@ class permission(minqlbot.Plugin):
         if not c.fetchone():
             self.db_query("INSERT INTO Players VALUES(?, ?, '', 0, 0)", name, lvl)
             self.db_commit()
-            channel.reply("^6{}^7 has been added as a player with permission level ^6{}^7."
+            channel.reply("^5{}^7 has been added as a player with permission level ^5{}^7."
                 .format(name, lvl))
         else:
             self.db_query("UPDATE Players SET permission=? WHERE name=?", lvl, name)
             self.db_commit()
-            channel.reply("^6{}^7's permission level has been set to ^6{}^7."
+            channel.reply("^5{}^7's permission level has been set to ^5{}^7."
                 .format(name, lvl))
 
         

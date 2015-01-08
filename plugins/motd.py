@@ -71,6 +71,6 @@ class motd(minqlbot.Plugin):
                 channel.reply("^7There is no active MOTD.")
     
     def tell_motd(self, player, msg):
-        self.tell("^6*** ^7Message of the Day ^6***", player)
+        self.tell("^5*** ^7Message of the Day ^5***", player)
         self.tell(msg, player)
 

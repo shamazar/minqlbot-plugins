@@ -268,7 +268,7 @@ class essentials(minqlbot.Plugin):
         self.opsay(" ".join(msg[1:]))
         
     def cmd_help(self, player, msg, channel):
-        channel.reply("^7minqlbot {} - See ^6http://minomino.org/quake/ ^7for more info."
+        channel.reply("^7minqlbot {} - See ^5http://zr.lc/ ^7for more info."
             .format(minqlbot.__version__))
     
     def cmd_db(self, player, msg, channel):
@@ -300,9 +300,9 @@ class essentials(minqlbot.Plugin):
         if name == minqlbot.NAME.lower():
             channel.reply("^7Does taking a selfie count?")
         elif name == player.clean_name.lower():
-            channel.reply("^7Depends. Are you ^6hot^7?")
+            channel.reply("^7Depends. Are you ^5hot^7?")
         elif self.player(name):
-            channel.reply("^7But that player's already here, you ^6dummy^7!")
+            channel.reply("^7But that player's already here, you ^5dummy^7!")
         else:
             c = self.db_query("SELECT last_seen FROM Players WHERE name=?", name)
             row = c.fetchone()
@@ -311,13 +311,13 @@ class essentials(minqlbot.Plugin):
                 td = datetime.datetime.now() - then
                 r = re.match(r'((?P<d>.*) days*, )?(?P<h>..?):(?P<m>..?):.+', str(td))
                 if r.group("d"):
-                    channel.reply("^7I saw {} ^6{}^7 day(s), ^6{}^7 hour(s) and ^6{}^7 minute(s) ago."
+                    channel.reply("^7I saw {} ^5{}^7 day(s), ^5{}^7 hour(s) and ^5{}^7 minute(s) ago."
                         .format(name, r.group("d"), r.group("h"), r.group("m")))
                 else:
-                    channel.reply("^7I saw {} ^6{}^7 hour(s) and ^6{}^7 minute(s) ago."
+                    channel.reply("^7I saw {} ^5{}^7 hour(s) and ^5{}^7 minute(s) ago."
                         .format(name, r.group("h"), r.group("m")))
             else:
-                channel.reply("^7I have never seen ^6{}^7 before.".format(name))
+                channel.reply("^7I have never seen ^5{}^7 before.".format(name))
 
     def cmd_time(self, player, msg, channel):
         tz_offset = 0
@@ -330,13 +330,13 @@ class essentials(minqlbot.Plugin):
         tz = datetime.timezone(offset=datetime.timedelta(hours=tz_offset))
         now = datetime.datetime.now(tz)
         if tz_offset > 0:
-            channel.reply("^7The current time is: ^6{} UTC+{}"
+            channel.reply("^7The current time is: ^5{} UTC+{}"
                 .format(now.strftime(TIME_FORMAT), tz_offset))
         elif tz_offset < 0:
-            channel.reply("^7The current time is: ^6{} UTC{}"
+            channel.reply("^7The current time is: ^5{} UTC{}"
                 .format(now.strftime(TIME_FORMAT), tz_offset))
         else:
-            channel.reply("^7The current time is: ^6{} UTC"
+            channel.reply("^7The current time is: ^5{} UTC"
                 .format(now.strftime(TIME_FORMAT)))
 
     def cmd_teamsize(self, player, msg, channel):
@@ -382,4 +382,4 @@ class essentials(minqlbot.Plugin):
             self.debug("resolve_votes: Where'd the votes go?")
         elif votes[0] > votes[1]:
             self.vote_yes()
-            self.msg("^7Result: ^6{}^7 - {}".format(votes[0], votes[1]))
+            self.msg("^7Result: ^5{}^7 - {}".format(votes[0], votes[1]))

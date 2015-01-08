@@ -79,8 +79,8 @@ class irc(minqlbot.Plugin):
         self.privmsg(self.admin_channel, "{}\r\n".format(msg))
     
     def handle_game_chat(self, player, msg, channel):
-        if player.clean_name.lower() == minqlbot.NAME.lower() and msg.startswith("^6<^7"):
-            # TODO: More elegant solution to msg.startswith("^6<^7")
+        if player.clean_name.lower() == minqlbot.NAME.lower() and msg.startswith("^5<^7"):
+            # TODO: More elegant solution to msg.startswith("^5<^7")
             return
         elif channel == "chat":
             self.privmsg(self.channel, "<{}> {}\r\n"
@@ -104,7 +104,7 @@ class irc(minqlbot.Plugin):
         # COMMANDS
         # .team - Send to team chat instead.
         if split_msg[0] == ".team" and channel.lower() == self.channel.lower():
-            self.msg("^6<^7{}^6> ^5{}".format(user, " ".join(split_msg[1:])), "team_chat")
+            self.msg("^5<^7{}^5> ^5{}".format(user, " ".join(split_msg[1:])), "team_chat")
         # .players - List players currently on the server.
         elif split_msg[0] == ".players":
                 teams = self.teams()
@@ -139,7 +139,7 @@ class irc(minqlbot.Plugin):
             minqlbot.COMMANDS.handle_input(minqlbot.DummyPlayer(minqlbot.NAME), msg_text, self.irc_bot_channel)
         # Anything else is sent as a message to the server.
         elif channel.lower() == self.channel.lower():
-            self.msg("^6<^7{}^6> ^2{}".format(user, msg_text))
+            self.msg("^5<^7{}^5> ^2{}".format(user, msg_text))
     
     def handle_player_connect(self, player):
         name = player.clean_name

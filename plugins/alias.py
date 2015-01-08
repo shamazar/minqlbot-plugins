@@ -41,7 +41,7 @@ class alias(minqlbot.Plugin):
         if not c.fetchone():
             self.db_query("INSERT INTO Aliases VALUES(?, ?)", real, fake)
             self.db_commit()
-            channel.reply("^6{}^7 will now be treated as ^6{}^7 in the context of balance."
+            channel.reply("^5{}^7 will now be treated as ^5{}^7 in the context of balance."
                 .format(msg[2], msg[1]))
             self.remove_name_from_balance_cache(fake)
         else:
@@ -72,12 +72,12 @@ class alias(minqlbot.Plugin):
         res = c.fetchmany(10)
         if res:
             aliases = ", ".join([row["other_name"] for row in res])
-            channel.reply("^6{}^7 is also known as: ^6{}".format(who, aliases))
+            channel.reply("^5{}^7 is also known as: ^5{}".format(who, aliases))
         else:
             c = self.db_query("SELECT name FROM Aliases WHERE other_name=?", who)
             row = c.fetchone()
             if row:
-                channel.reply("^6{}^7 is an alias of ^6{}^7.".format(msg[1], row["name"]))
+                channel.reply("^5{}^7 is an alias of ^5{}^7.".format(msg[1], row["name"]))
             else:
                 channel.reply("^7Sorry, I don't know of any.")
 
