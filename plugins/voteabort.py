@@ -28,7 +28,7 @@ class voteabort(minqlbot.Plugin):
         self.add_hook("game_start", self.handle_game_start)
         self.add_hook("round_end", self.handle_round_end)
         self.add_command("abort", self.cmd_abort)
-        self.add_command(("yes", "y"), self.cmd_vote_abort)
+        self.add_command("y", self.cmd_vote_abort)
 
     def handle_game_start(self, game):
         self.abort_votes = 0
