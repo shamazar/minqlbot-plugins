@@ -36,7 +36,7 @@ class serverelo(minqlbot.Plugin):
         
         self.cache = {}
 
-    def cmd_serverelo(self, msg, game_type, channel):
+    def cmd_serverelo(self, player, msg, channel):
         if "balance" in self.plugins:
             self.selo(channel)
         else:
