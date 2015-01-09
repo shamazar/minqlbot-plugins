@@ -17,8 +17,6 @@
 
 """
 Allows the players to vote to abort the game using !abort and !y to agree.
-
-REQUIRES COMMENTING OUT ABORT COMMAND IN ESSENTIALS
 """
 
 import minqlbot
@@ -58,7 +56,7 @@ class voteabort(minqlbot.Plugin):
                 else:
                     channel.reply("^7You aren't playing in this game!")
         else:
-            channel.reply("^7But the game isn't even on!")
+            return
 
     def cmd_vote_abort(self, player, msg, channel):
         teams = self.teams()
