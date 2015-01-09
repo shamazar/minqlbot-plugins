@@ -48,7 +48,7 @@ class essentials(minqlbot.Plugin):
         self.add_command("mute", self.cmd_mute, 1, usage="<name>")
         self.add_command("unmute", self.cmd_unmute, 1, usage="<name>")
         self.add_command("allready", self.cmd_allready, 2)
-        #self.add_command("abort", self.cmd_abort, 2)
+        self.add_command("abort", self.cmd_abort, 2)
         self.add_command("shuffle", self.cmd_shuffle, 1)
         self.add_command("cointoss", self.cmd_cointoss, 1)
         self.add_command("ruleset", self.cmd_ruleset, 3, usage="<ruleset>")

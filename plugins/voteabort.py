@@ -27,7 +27,7 @@ class voteabort(minqlbot.Plugin):
     def __init__(self):
         self.add_hook("game_start", self.handle_game_start)
         self.add_hook("round_end", self.handle_round_end)
-        self.add_command("abort", self.cmd_abort)
+        self.add_command("abort", self.cmd_abort, priority=minqlbot.PRI_HIGHER)
         self.add_command("y", self.cmd_vote_abort)
 
     def handle_game_start(self, game):
@@ -45,7 +45,7 @@ class voteabort(minqlbot.Plugin):
         players = teams["red"] + teams["blue"]
         if self.game().state == "in_progress":
             if self.has_permission(player, 2):
-                self.abort_game(channel)
+                return
             else:
                 if player in players:
                     self.vote_in_progress = True
