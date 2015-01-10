@@ -607,6 +607,7 @@ class balance(minqlbot.Plugin):
             switch = self.suggest_switch(teams, game_type)
             if switch:
                 self.msg("^7Balancing teams...")
+                self.send_command("lock")
                 while switch:
                     p1 = switch[0][0]
                     p2 = switch[0][1]
@@ -617,9 +618,20 @@ class balance(minqlbot.Plugin):
                     teams["blue"].remove(p2)
                     teams["red"].remove(p1)
                     switch = self.suggest_switch(teams, game_type)
+                self.send_command("unlock")
                 avg_red = self.team_average(teams["red"], game_type)
                 avg_blue = self.team_average(teams["blue"], game_type)
-                self.msg("^7Done! ^1RED^7: {} - ^4BLUE^7: {}".format(round(avg_red), round(avg_blue)))
+                diff_rounded = abs(round(avg_red) - round(avg_blue)) # Round individual averages.
+                
+                if round(avg_red) > round(avg_blue):
+                    self.msg("^7Done! ^1{} ^7vs ^4{}^7 - DIFFERENCE: ^1{}"
+                        .format(round(avg_red), round(avg_blue), diff_rounded))
+                elif round(avg_red) < round(avg_blue):
+                    self.msg("^7Done! ^1{} ^7vs ^4{}^7 - DIFFERENCE: ^4{}"
+                        .format(round(avg_red), round(avg_blue), diff_rounded))
+                else:
+                    self.msg("^7Done! ^1{} ^7vs ^4{}^7 - Holy shit!"
+                        .format(round(avg_red), round(avg_blue)))
             else:
                 channel.reply("^7Teams are good! Nothing to balance.")
             return True
