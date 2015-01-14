@@ -49,6 +49,7 @@ class voteabort(minqlbot.Plugin):
                     self.vote_in_progress = True
                     self.voted.append(player)
                     channel.reply("^7Abort vote started. Vote with ^5!y ^7before the next round starts.")
+                    self.abort_votes = 1
                     if len(players) == 2:
                         self.required = 2
                     else:
