@@ -18,26 +18,49 @@
 import minqlbot
 
 class lockteams(minqlbot.Plugin):
-	def __init__(self):
-		self.add_command("lock", self.cmd_lock, 1)
-		self.add_command("unlock", self.cmd_unlock, 1)
+    def __init__(self):
+        self.add_hook("chat", self.handle_chat)
+        self.add_hook("console", self.handle_console)
+        self.add_command("lock", self.cmd_lock, 1)
+        self.add_command("unlock", self.cmd_unlock, 1)
 
-	def cmd_lock(self, player, msg, channel):
-		if len(msg) < 2:
-			self.send_command("lock")
-		elif msg[1] == "r":
-			self.send_command("lock r")
-		elif msg[1] == "b":
-			self.send_command("lock b")
-		else:
-			channel.reply("^7Unintelligible input.")
+        self.red_locked = False
+        self.blue_locked = False
 
-	def cmd_unlock(self, player, msg, channel):
-		if len(msg) < 2:
-			self.send_command("unlock")
-		elif msg[1] == "r":
-			self.send_command("unlock r")
-		elif msg[1] == "b":
-			self.send_command("unlock b")
-		else:
-			channel.reply("^7Unintelligible input.")
+    def handle_chat(self, player, msg, chat_type):
+        if "lock" in msg:
+            if self.game().state == "warmup":
+                if self.red_locked and self.blue_locked:
+                    self.send_command("unlock")
+
+    def handle_console(self, cmd):
+        if "The RED team is now locked" in cmd:
+            self.red_locked = True
+        elif "The BLUE team is now locked" in cmd:
+            self.blue_locked = True
+        elif "The RED team is now unlocked" in cmd:
+            self.red_locked = False
+        elif "The RED team is now unlocked" in cmd:
+            self.blue_locked = False
+
+
+
+    def cmd_lock(self, player, msg, channel):
+        if len(msg) < 2:
+            self.send_command("lock")
+        elif msg[1] == "r":
+            self.send_command("lock r")
+        elif msg[1] == "b":
+            self.send_command("lock b")
+        else:
+            channel.reply("^7Unintelligible input.")
+
+    def cmd_unlock(self, player, msg, channel):
+        if len(msg) < 2:
+            self.send_command("unlock")
+        elif msg[1] == "r":
+            self.send_command("unlock r")
+        elif msg[1] == "b":
+            self.send_command("unlock b")
+        else:
+            channel.reply("^7Unintelligible input.")
