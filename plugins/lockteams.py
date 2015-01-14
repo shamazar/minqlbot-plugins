@@ -21,6 +21,7 @@ class lockteams(minqlbot.Plugin):
     def __init__(self):
         self.add_hook("chat", self.handle_chat)
         self.add_hook("console", self.handle_console)
+        self.add_hook("map", self.handle_map)
         self.add_command("lock", self.cmd_lock, 1)
         self.add_command("unlock", self.cmd_unlock, 1)
 
@@ -43,7 +44,9 @@ class lockteams(minqlbot.Plugin):
         elif "The RED team is now unlocked" in cmd:
             self.blue_locked = False
 
-
+    def handle_map(self, map):
+        self.red_locked = False
+        self.blue_locked = False
 
     def cmd_lock(self, player, msg, channel):
         if len(msg) < 2:
