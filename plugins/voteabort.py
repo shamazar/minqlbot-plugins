@@ -46,14 +46,17 @@ class voteabort(minqlbot.Plugin):
                 return
             else:
                 if player in players:
-                    self.vote_in_progress = True
-                    self.voted.append(player)
-                    channel.reply("^7Abort vote started. Vote with ^5!y ^7before the next round starts.")
-                    self.abort_votes = 1
-                    if len(players) == 2:
-                        self.required = 2
+                    if not self.vote_in_progress:
+                        self.vote_in_progress = True
+                        self.voted.append(player)
+                        channel.reply("^7Abort vote started. Vote with ^5!y ^7before the next round starts.")
+                        self.abort_votes = 1
+                        if len(players) == 2:
+                            self.required = 2
+                        else:
+                            self.required = float(len(players))*0.7
                     else:
-                        self.required = float(len(players))*0.7
+                        channel.reply("There is already a vote! Vote yes with ^5!y^7.")
                 else:
                     channel.reply("^7You aren't playing in this game!")
         else:
